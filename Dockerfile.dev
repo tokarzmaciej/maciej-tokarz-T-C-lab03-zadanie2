@@ -1,6 +1,7 @@
-FROM node:14
+FROM node:alpine
 WORKDIR /app
-COPY ./react-app/package.json .
-RUN yarn install
-COPY ./react-app/ .
-CMD yarn start
+COPY ./app/package.json .
+COPY ./app/yarn.lock .
+RUN yarn install --frozen-lockfile
+COPY ./app/ .
+CMD ["yarn", "start"]

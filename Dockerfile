@@ -1,9 +1,10 @@
-FROM node:14 AS builder
+FROM node:alpine AS builder
 WORKDIR /app
-COPY ./react-app/package.json .
-RUN yarn install
-COPY ./react-app/ .
+COPY ./app/package.json .
+COPY ./app/yarn.lock .
+RUN yarn install --frozen-lockfile
+COPY ./app/ .
 RUN yarn build
 
-FROM nginx:latest
+FROM nginx:alpine
 COPY --from=builder /app/build/ /usr/share/nginx/html
